@@ -31,8 +31,9 @@ class Token:
             logme.debug(f'Retrieving {req.url}')
             try:
                 # r = self._session.send(req, allow_redirects=True, timeout=self._timeout)
-                print(f'config.Proxy_username : {config.Proxy_username}')
+                print(f'config.Proxy_username : {self.config.Proxy_username}')
                 r = self._session.request(method='GET', url=self.url, allow_redirects=True, timeout=self._timeout, proxies=self.proxies)
+                print(r.text)
             except requests.exceptions.RequestException as exc:
                 if attempt < self._retries:
                     retrying = ', retrying'
@@ -63,6 +64,7 @@ class Token:
         logme.debug('Retrieving guest token')
         res = self._request()
         match = re.search(r'\("gt=(\d+);', res.text)
+        print(f'match: {match}')
         if match:
             logme.debug('Found guest token in HTML')
             self.config.Guest_token = str(match.group(1))
