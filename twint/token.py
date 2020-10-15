@@ -22,6 +22,7 @@ class Token:
         self._retries = 5
         self._timeout = 10
         self.url = 'https://twitter.com'
+        self.proxies = { 'socks5': f'socks5://{config.Proxy_username}:{config.Proxy_password}@{config.Proxy_host}:{config.Proxy_port}', 'socks5': f'socks5://{config.Proxy_username}:{config.Proxy_password}@{config.Proxy_host}:{config.Proxy_port}' }
 
     def _request(self):
         for attempt in range(self._retries + 1):
@@ -29,7 +30,8 @@ class Token:
             req = self._session.prepare_request(requests.Request('GET', self.url))
             logme.debug(f'Retrieving {req.url}')
             try:
-                r = self._session.send(req, allow_redirects=True, timeout=self._timeout)
+                # r = self._session.send(req, allow_redirects=True, timeout=self._timeout)
+                r = self._session.request(method='GET', url=self.url, allow_redirects=True, timeout=self._timeout, proxies=self.proxies)
             except requests.exceptions.RequestException as exc:
                 if attempt < self._retries:
                     retrying = ', retrying'
