@@ -31,6 +31,7 @@ class Token:
             logme.debug(f'Retrieving {req.url}')
             try:
                 # r = self._session.send(req, allow_redirects=True, timeout=self._timeout)
+                print(f'config.Proxy_username : {config.Proxy_username}')
                 r = self._session.request(method='GET', url=self.url, allow_redirects=True, timeout=self._timeout, proxies=self.proxies)
             except requests.exceptions.RequestException as exc:
                 if attempt < self._retries:
